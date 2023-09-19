@@ -5,7 +5,7 @@
 
 # SetChatBox_Addon.lua
 This addon is intended to game World of Warcraft Wrath of the Lich King (3.3.5a).   
-It is created in mind to use in <a href="https://github.com/ZiumC/Blacklist_Bot" rel="nofollow">Blacklist_Bot.py</a>.
+It is created in mind to use with <a href="https://github.com/ZiumC/Blacklist_Bot" rel="nofollow">Blacklist_Bot.py</a>.
 
 # Instalation 
 1) To use this addon you have to download latest zip file at <a href="https://github.com/ZiumC/SetChatBox_Addon/releases" rel="nofollow">this link</a>.
