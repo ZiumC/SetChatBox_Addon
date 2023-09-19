@@ -1,0 +1,7 @@
+## Interface: 30300
+## Title: BlacklistChecker
+## Notes: Checks if player exists on blacklist
+## Author: Zium
+## Version: 0.0.1
+
+CopyToClipboard.lua
