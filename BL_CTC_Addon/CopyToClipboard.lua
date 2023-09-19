@@ -4,6 +4,7 @@ CTC_PLAYER_NAME_PROMPT = "Copy Name"
 CTC_PLAYER_NAME_WITH_COMMAND_BTN = "COPY_PLAYER_NAME_WITH_COMMAND"
 CTC_PLAYER_NAME_WITH_COMMAND_PROMPT = "Copy & Command"
 
+
 Colors = {
     {
         title = 'LIGHTBLUE',
@@ -23,11 +24,25 @@ local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY","TARGET","FRIEND",}
 local function menuButtonFunction(self)	
     local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
 	if self.value == CTC_PLAYER_NAME_BTN then
-        print(StartLine .. Colors[2].color .. "Copied" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " to clipboard.")	
+        local ChatFrame1EditBox = ChatFrame1EditBox
+        ChatFrame1EditBox:SetText(PlayerName.name)
+        ChatFrame1EditBox:SetFocus()
+        ChatFrame1EditBox:HighlightText(0, -1)
+        print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")	
 	end
     if self.value == CTC_PLAYER_NAME_WITH_COMMAND_BTN then
 		print("Target added to list")		
 	end
+end
+
+local function CopyTextToClipboard(editBox)
+    local textToCopy = editBox:GetText()
+    if textToCopy then
+        if textToCopy ~= "" then
+            -- Skopiuj tekst do schowka
+            EditBoxCopyTextToClipboard(editBox)
+        end
+    end
 end
 
 UnitPopupButtons[CTC_PLAYER_NAME_BTN] = {
