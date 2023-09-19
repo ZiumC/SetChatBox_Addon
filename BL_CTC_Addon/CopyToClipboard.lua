@@ -4,11 +4,26 @@ CTC_PLAYER_NAME_PROMPT = "Copy Name"
 CTC_PLAYER_NAME_WITH_COMMAND_BTN = "COPY_PLAYER_NAME_WITH_COMMAND"
 CTC_PLAYER_NAME_WITH_COMMAND_PROMPT = "Copy & Command"
 
+Colors = {
+    {
+        title = 'LIGHTBLUE',
+        color = 'cff00ccff',
+    }, 
+    {
+        title = 'RED',
+        color = 'cffff0000',
+    }, 
+}
+
+local StartLine = '\124'
+local EndLine = '\124r'
+
 local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY","TARGET","FRIEND",}
 
 local function menuButtonFunction(self)	
+    local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
 	if self.value == CTC_PLAYER_NAME_BTN then
-		print("Target added to list")		
+        print(StartLine .. Colors[2].color .. "Copied" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " to clipboard.")	
 	end
     if self.value == CTC_PLAYER_NAME_WITH_COMMAND_BTN then
 		print("Target added to list")		
