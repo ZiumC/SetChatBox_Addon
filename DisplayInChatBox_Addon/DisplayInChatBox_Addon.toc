@@ -1,7 +1,7 @@
 ## Interface: 30300
-## Title: SetChatBox
+## Title: DisplayInChatBox
 ## Notes: Displays on chat edit box player name or full command ready to copy.
 ## Author: Zium
 ## Version: 0.0.1
 
-SetChatBoxToCopy.lua
+DisplayInChatBox.lua
