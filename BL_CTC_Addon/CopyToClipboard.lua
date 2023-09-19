@@ -23,10 +23,10 @@ local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY","TARGET","FRIEND",}
 
 local function menuButtonFunction(self)	
     local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
+    local ChatFrame1EditBox = ChatFrame1EditBox
+    ChatFrame1EditBox:SetFocus()
 	if self.value == CTC_PLAYER_NAME_BTN then
-        local ChatFrame1EditBox = ChatFrame1EditBox
         ChatFrame1EditBox:SetText(PlayerName.name)
-        ChatFrame1EditBox:SetFocus()
         ChatFrame1EditBox:HighlightText(0, -1)
         print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")	
 	end
