@@ -1,7 +1,7 @@
 ## Interface: 30300
-## Title: BlacklistChecker
-## Notes: Checks if player exists on blacklist
+## Title: CopyToChatBox
+## Notes: Displays on chat edit box player name or full command ready to copy.
 ## Author: Zium
 ## Version: 0.0.1
 
-CopyToClipboard.lua
+CopyToChatBox.lua

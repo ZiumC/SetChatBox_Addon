@@ -14,6 +14,10 @@ Colors = {
         title = 'RED',
         color = 'cffff0000',
     }, 
+    {
+        title = 'GREEN',
+        color = 'cff66ff00',
+    }, 
 }
 
 local StartLine = '\124'
@@ -25,24 +29,24 @@ local function menuButtonFunction(self)
     local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
     local ChatFrame1EditBox = ChatFrame1EditBox
     ChatFrame1EditBox:SetFocus()
-	if self.value == CTC_PLAYER_NAME_BTN then
-        ChatFrame1EditBox:SetText(PlayerName.name)
-        ChatFrame1EditBox:HighlightText(0, -1)
-        print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")	
-	end
-    if self.value == CTC_PLAYER_NAME_WITH_COMMAND_BTN then
-		print("Target added to list")		
-	end
-end
 
-local function CopyTextToClipboard(editBox)
-    local textToCopy = editBox:GetText()
-    if textToCopy then
-        if textToCopy ~= "" then
-            -- Skopiuj tekst do schowka
-            EditBoxCopyTextToClipboard(editBox)
-        end
+	if self.value == CTC_PLAYER_NAME_BTN then
+        local command = PlayerName.name
+        ChatFrame1EditBox:SetText(command)
+        ChatFrame1EditBox:HighlightText(0, -1)
+        print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")
+        print("Text in chat: " .. StartLine .. Colors[3].color .. command .. EndLine)
     end
+
+    if self.value == CTC_PLAYER_NAME_WITH_COMMAND_BTN then
+        local command = "!check " .. PlayerName.name
+        ChatFrame1EditBox:SetText(command)
+        ChatFrame1EditBox:HighlightText(0, -1)
+        print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " command: " .. StartLine .. Colors[1].color .. "!check" ..
+         EndLine .." and player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")
+		print("Text in chat: " .. StartLine .. Colors[3].color .. command .. EndLine)		
+	end
+
 end
 
 UnitPopupButtons[CTC_PLAYER_NAME_BTN] = {
@@ -58,11 +62,12 @@ UnitPopupButtons[CTC_PLAYER_NAME_WITH_COMMAND_BTN] = {
 }
 
 for k,v in pairs(DropdownMenuList) do		
-	table.insert(UnitPopupMenus[v],CTC_PLAYER_NAME_BTN)
+	table.insert(UnitPopupMenus[v],CTC_PLAYER_NAME_WITH_COMMAND_BTN)
 end
 
 for k,v in pairs(DropdownMenuList) do		
-	table.insert(UnitPopupMenus[v],CTC_PLAYER_NAME_WITH_COMMAND_BTN)
+	table.insert(UnitPopupMenus[v],CTC_PLAYER_NAME_BTN)
 end
+
 
 hooksecurefunc("UnitPopup_OnClick",menuButtonFunction)
