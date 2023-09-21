@@ -2,6 +2,6 @@
 ## Title: DisplayInChatBox
 ## Notes: Displays on chat edit box player name or full command ready to copy.
 ## Author: Zium
-## Version: 0.0.2
+## Version: 0.0.3
 
 DisplayInChatBox.lua
