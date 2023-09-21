@@ -17,7 +17,7 @@ It is created in mind to use with <a href="https://github.com/ZiumC/Blacklist_Bo
 7) Just paste copied folder from point 3 and done.
 
 # How to work with addon?
-Usage is very simple, in chat game just right click on player name. At the bottom, you will see additional positions 'Copy & Command' and 'Copy Name'.    
+Usage is very simple, in chat game just right click on player name. At the bottom, you will see additional positions 'Copy & Append', 'Copy & Command' and 'Copy Name'.    
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/853db897-15f3-4532-b28b-4db01710b8b1)    
 - ```Copy & Append``` - displays and appends player name to current text in chat edit box.
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/5958c5d3-973a-4b93-bfc7-8deb2879428b)
