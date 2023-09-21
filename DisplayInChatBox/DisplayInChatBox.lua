@@ -4,7 +4,6 @@ CTC_PLAYER_NAME_PROMPT = "Copy Name"
 CTC_PLAYER_NAME_WITH_COMMAND_BTN = "COPY_PLAYER_NAME_WITH_COMMAND"
 CTC_PLAYER_NAME_WITH_COMMAND_PROMPT = "Copy & Command"
 
-
 Colors = {
     {
         title = 'LIGHTBLUE',
@@ -23,15 +22,15 @@ Colors = {
 local StartLine = '\124'
 local EndLine = '\124r'
 
-local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY","TARGET","FRIEND",}
+local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY", "RAID" ,"TARGET","FRIEND", "VEHICLE", "SELF", "FOCUS", }
 
 local function menuButtonFunction(self)	
     local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
     local ChatFrame1EditBox = ChatFrame1EditBox
-    ChatFrame1EditBox:SetFocus()
 
 	if self.value == CTC_PLAYER_NAME_BTN then
         local command = PlayerName.name
+        ChatFrame1EditBox:SetFocus()
         ChatFrame1EditBox:SetText(command)
         ChatFrame1EditBox:HighlightText(0, -1)
         print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")
@@ -40,6 +39,7 @@ local function menuButtonFunction(self)
 
     if self.value == CTC_PLAYER_NAME_WITH_COMMAND_BTN then
         local command = "!check " .. PlayerName.name
+        ChatFrame1EditBox:SetFocus()
         ChatFrame1EditBox:SetText(command)
         ChatFrame1EditBox:HighlightText(0, -1)
         print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " command: " .. StartLine .. Colors[1].color .. "!check" ..
