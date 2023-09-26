@@ -79,7 +79,7 @@ dropDown:SetScript("OnDragStart", dropDown.StartMoving)
 dropDown:SetScript("OnDragStop", dropDown.StopMovingOrSizing)
 dropDown:SetScript("OnHide", dropDown.StopMovingOrSizing)
 dropDown:SetPoint("TOP")
-UIDropDownMenu_SetWidth(dropDown, 200)
+UIDropDownMenu_SetWidth(dropDown, 170)
 UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
 
 local groups = {}
@@ -214,7 +214,8 @@ function dropDown:ShowOptionWindow(playerName, className)
                 ChatFrame1EditBox:HighlightText(0, -1)
                 print("\124cffff0000 Displayed\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
             end
-
+            
+            UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
             window:Hide()
         end)
     end
