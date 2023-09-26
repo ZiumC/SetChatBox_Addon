@@ -110,7 +110,7 @@ function dropDown:ShowOptionWindow(playerName, className)
 
     -- create and configure window option
     local window = CreateFrame("FRAME", "PlayerOptionsFrame", UIParent)
-    window:SetSize(150, 170)
+    window:SetSize(170, 170)
     window:SetPoint("CENTER")
     window:SetBackdrop({
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -144,44 +144,46 @@ function dropDown:ShowOptionWindow(playerName, className)
         window:Hide()
     end)
 
-    local appendBtn = CreateFrame("BUTTON", "AppendBtn", window, "UIPanelButtonTemplate")
-	appendBtn:SetPoint("TOP", window, "CENTER", 0, 20)
-	appendBtn:SetWidth(75)
-	appendBtn:SetHeight(25)
-    appendBtn:SetText("Append")
-    appendBtn:SetScript("OnClick", function()
-        ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. playerName .. " ")
-        print("\124cffff0000 Appended\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " to chat box.")
-        window:Hide()
-    end)
-	
-    local checkBtn = CreateFrame("BUTTON", "CheckBtn", window, "UIPanelButtonTemplate")
-	checkBtn:SetPoint("TOP", window, "CENTER", 0, -15)
-	checkBtn:SetWidth(75)
-	checkBtn:SetHeight(25)
-    checkBtn:SetText("!check")
-    checkBtn:SetScript("OnClick", function()
-        local command = "!check"
-        ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText(command .. " " .. playerName)
-        ChatFrame1EditBox:HighlightText(0, -1)
-        print("\124cffff0000 Displayed\124r command: \124cff00ccff" .. command 
-        .. "\124r and player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
-        window:Hide()
-    end)
+    -- create player options buttons
+    local yPos = 30
+    for i = 1, length(BUTTONS) do
+        local btnName = BUTTONS[i].title .. "Btn"
 
-    local nameBtn = CreateFrame("BUTTON", "CheckBtn", window, "UIPanelButtonTemplate")
-	nameBtn:SetPoint("TOP", window, "CENTER", 0,-50)
-	nameBtn:SetWidth(75)
-	nameBtn:SetHeight(25)
-    nameBtn:SetText("Name")
-    nameBtn:SetScript("OnClick", function()
-        ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText(playerName)
-        ChatFrame1EditBox:HighlightText(0, -1)
-        print("\124cffff0000 Displayed\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
-        window:Hide()
-    end)
+        local button = CreateFrame("BUTTON", btnName, window, "UIPanelButtonTemplate")
+        button:SetPoint("TOP", window, "CENTER", 0, yPos)
+        yPos = yPos - 35
+        button:SetWidth(100)
+	    button:SetHeight(27)
+        button:SetText(BUTTONS[i].title)
 
+        local icon = button:CreateTexture(nil, "ARTWORK")
+        icon:SetTexture(BUTTONS[i].icon)
+        icon:SetSize(16, 16) 
+        icon:SetPoint("RIGHT", button, "RIGHT", -4, 0)
+
+        button:SetScript("OnClick", function()
+            ChatFrame1EditBox:SetFocus()
+
+            if  btnName == "AppendBtn" then
+                ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. playerName .. " ")
+                print("\124cffff0000 Appended\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " to chat box.")
+            end
+
+            if  btnName == "!checkBtn" then
+                local command = BUTTONS[i].title
+                ChatFrame1EditBox:SetText(command .. " " .. playerName)
+                ChatFrame1EditBox:HighlightText(0, -1)
+                print("\124cffff0000 Displayed\124r command: \124cff00ccff" .. command 
+                .. "\124r and player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
+            end
+
+            if  btnName == "NameBtn" then
+                ChatFrame1EditBox:SetText(playerName)
+                ChatFrame1EditBox:HighlightText(0, -1)
+                print("\124cffff0000 Displayed\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
+            end
+
+            window:Hide()
+        end)
+    end
 end
