@@ -25,6 +25,12 @@ end
 
 -- create and configure dropdown menu
 local dropDown = CreateFrame("FRAME", "RaidDropDown", UIParent, "UIDropDownMenuTemplate")
+dropDown:EnableMouse(true)
+dropDown:SetMovable(true)
+dropDown:RegisterForDrag("LeftButton")
+dropDown:SetScript("OnDragStart", dropDown.StartMoving)
+dropDown:SetScript("OnDragStop", dropDown.StopMovingOrSizing)
+dropDown:SetScript("OnHide", dropDown.StopMovingOrSizing)
 dropDown:SetPoint("TOP")
 UIDropDownMenu_SetWidth(dropDown, 200)
 UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
