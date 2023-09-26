@@ -109,9 +109,17 @@ function dropDown:ShowOptionWindow(playerName, className)
     window:SetSize(150, 170)
     window:SetPoint("CENTER")
     window:SetBackdrop({
-        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-        edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
-        edgeSize = 1,
+        bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+        edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+        tile = true, 
+        tileSize = 16, 
+        edgeSize = 16, 
+        insets = { 
+            left = 4, 
+            right = 4, 
+            top = 4, 
+            bottom = 4 
+        }
     })
     window:SetBackdropColor(0, 0, 0, .5)
     window:SetBackdropBorderColor(0, 0, 0)
@@ -139,7 +147,8 @@ function dropDown:ShowOptionWindow(playerName, className)
 	appendBtn:SetHeight(25)
     appendBtn:SetText("Append")
     appendBtn:SetScript("OnClick", function()
-        print(playerName)
+        ChatFrame1EditBox:SetFocus()
+        ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. playerName .. " ")
         window:Hide()
     end)
 	
@@ -149,7 +158,9 @@ function dropDown:ShowOptionWindow(playerName, className)
 	checkBtn:SetHeight(25)
     checkBtn:SetText("!check")
     checkBtn:SetScript("OnClick", function()
-        print(playerName)
+        ChatFrame1EditBox:SetFocus()
+        ChatFrame1EditBox:SetText("!check " .. playerName)
+        ChatFrame1EditBox:HighlightText(0, -1)
         window:Hide()
     end)
 
@@ -159,7 +170,9 @@ function dropDown:ShowOptionWindow(playerName, className)
 	nameBtn:SetHeight(25)
     nameBtn:SetText("Name")
     nameBtn:SetScript("OnClick", function()
-        print("dupa")
+        ChatFrame1EditBox:SetFocus()
+        ChatFrame1EditBox:SetText(playerName)
+        ChatFrame1EditBox:HighlightText(0, -1)
         window:Hide()
     end)
 
