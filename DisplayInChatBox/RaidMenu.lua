@@ -82,6 +82,7 @@ dropDown:SetPoint("TOP")
 UIDropDownMenu_SetWidth(dropDown, 200)
 UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
 
+local groups = {}
 -- create and bind the function to dropdown menu
 UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
@@ -89,16 +90,47 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     raidPlayersCount = GetNumGroupMembers()
     UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
 
+    local maxSubGroup = 0
     if (level or 1) == 1 then
         -- display raid players
         for i = 1, maxRaidPlayers do
             local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
+
             if name ~= nil then
-                info.text = SetPlayerNameColorByClass(name, fileName)
-                info.func = self.ShowOptionWindow
-                info.arg1 = name
-                info.arg2 = fileName
-                UIDropDownMenu_AddButton(info)
+                groups[i] = subgroup .. " " .. name
+            end
+
+            if subgroup > maxSubGroup then
+                maxSubGroup = subgroup
+            end
+        end
+
+        for j = 1, maxSubGroup do
+            info.text, info.hasArrow = "Group " .. j, true
+            UIDropDownMenu_AddButton(info)
+        end
+    else
+        -- split and get parrent button name
+        local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
+        local count = 0
+        local playerGroup = 0
+
+        for split in string.gmatch(parrentBtnName, "%S+") do
+            count = count + 1
+            if count == 2 then
+                playerGroup = split
+            end
+        end
+        for i = 1, maxRaidPlayers do
+            local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
+            if name ~= nil then
+                if playerGroup == (subgroup .."") then
+                    info.text = SetPlayerNameColorByClass(name, fileName)
+                    info.func = self.ShowOptionWindow
+                    info.arg1 = name
+                    info.arg2 = fileName
+                    UIDropDownMenu_AddButton(info, level)
+                end
             end
         end
     end
