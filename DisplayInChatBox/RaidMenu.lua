@@ -1,4 +1,5 @@
 local raidPlayersCount = GetNumGroupMembers()
+local maxRaidPlayers = 40
 
 BUTTONS = {
     {
@@ -77,4 +78,41 @@ function dropDown:ShowOptionWindow(playerName)
     window:SetScript("OnDragStart", window.StartMoving)
     window:SetScript("OnDragStop", window.StopMovingOrSizing)
     window:SetScript("OnHide", window.StopMovingOrSizing)
+
+    local close = CreateFrame("BUTTON", "CloseBtn", window, "UIPanelCloseButton")
+    close:SetPoint("TOPRIGHT", window, "TOPRIGHT")
+    close:SetScript("OnClick", function()
+        window:Hide()
+    end)
+
+    local appendBtn = CreateFrame("BUTTON", "AppendBtn", window, "UIPanelButtonTemplate")
+	appendBtn:SetPoint("TOP", window, "CENTER", 0, 35)
+	appendBtn:SetWidth(75)
+	appendBtn:SetHeight(25)
+    appendBtn:SetText("Append")
+    appendBtn:SetScript("OnClick", function()
+        print("a1")
+        window:Hide()
+    end)
+	
+    local checkBtn = CreateFrame("BUTTON", "CheckBtn", window, "UIPanelButtonTemplate")
+	checkBtn:SetPoint("TOP", window, "CENTER", 0, 0)
+	checkBtn:SetWidth(75)
+	checkBtn:SetHeight(25)
+    checkBtn:SetText("!check")
+    checkBtn:SetScript("OnClick", function()
+        print("a2")
+        window:Hide()
+    end)
+
+    local nameBtn = CreateFrame("BUTTON", "CheckBtn", window, "UIPanelButtonTemplate")
+	nameBtn:SetPoint("TOP", window, "CENTER", 0,-35)
+	nameBtn:SetWidth(75)
+	nameBtn:SetHeight(25)
+    nameBtn:SetText("Name")
+    nameBtn:SetScript("OnClick", function()
+        print("a3")
+        window:Hide()
+    end)
+
 end
