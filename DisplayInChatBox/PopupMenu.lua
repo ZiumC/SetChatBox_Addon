@@ -25,7 +25,7 @@ Colors = {
 local StartLine = '\124'
 local EndLine = '\124r'
 
-local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY", "RAID" ,"TARGET","FRIEND", "VEHICLE", "SELF", "FOCUS", }
+local DropdownMenuList = {"PLAYER", "RAID_PLAYER", "PARTY" ,"TARGET", "FRIEND", "VEHICLE", "FOCUS" , }
 
 local function menuButtonFunction(self)	
     local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
@@ -91,4 +91,4 @@ for k,v in pairs(DropdownMenuList) do
 end
 
 
-hooksecurefunc("UnitPopup_OnClick",menuButtonFunction)
+hooksecurefunc("UnitPopup_OnClick", menuButtonFunction)
