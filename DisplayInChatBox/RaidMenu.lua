@@ -24,45 +24,49 @@ local function length(T)
     return count
 end
 
-local function GetColorByClass(className)
+local function SetPlayerNameColorByClass(playerName, className)
+
+    local startColorLine = '\124'
+    local endColorLine = '\124r'
+
     if className == "Druid" then
-        return "cFFFFA500"
+        return startColorLine .. "cFFFFA500" .. playerName .. endColorLine
     end
 
     if className == "Paladin" then
-        return "cFFFFC0CB"
+        return startColorLine .. "cFFFFC0CB" .. playerName .. endColorLine
     end
 
     if className == "Death Knight" then
-        return "cFFFF0000"
+        return startColorLine .. "cFFFF0000" .. playerName .. endColorLine
     end
 
     if className == "Hunter" then
-        return "cFF90EE90"
+        return startColorLine .. "cFF90EE90" .. playerName .. endColorLine
     end
 
     if className == "Mage" then
-        return "cFFADD8E6"
+        return startColorLine .. "cFFADD8E6" .. playerName .. endColorLine
     end
 
     if className == "Priest" then
-        return "cffffffff"
+        return startColorLine .. "cffffffff" .. playerName .. endColorLine
     end
 
     if className == "Rogue" then
-        return "cffffff00"
+        return startColorLine .. "cffffff00" .. playerName .. endColorLine
     end
 
     if className == "Shaman" then
-        return "cff0000ff"
+        return startColorLine .. "cff0000ff" .. playerName .. endColorLine
     end
 
     if className == "Warlock" then
-        return "cFF800080"
+        return startColorLine .. "cFF800080" .. playerName .. endColorLine
     end
 
     if className == "Warrior" then
-        return "cFFD2B48C"
+        return startColorLine .. "cFFD2B48C" .. playerName .. endColorLine
     end
 end
 
@@ -90,7 +94,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         for i = 1, maxRaidPlayers do
             local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
             if name ~= nil then
-                info.text = "\124" .. GetColorByClass(fileName) .. name .. "\124r"
+                info.text = SetPlayerNameColorByClass(name, fileName)
                 info.func = self.ShowOptionWindow
                 info.arg1 = name
                 info.arg2 = fileName
@@ -129,10 +133,9 @@ function dropDown:ShowOptionWindow(playerName, className)
     window:SetScript("OnDragStart", window.StartMoving)
     window:SetScript("OnDragStop", window.StopMovingOrSizing)
     window:SetScript("OnHide", window.StopMovingOrSizing)
-    
     window.text = window:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     window.text:SetPoint("CENTER", window, "CENTER", 0, 45)
-    window.text:SetText("Actions for \124" .. GetColorByClass(className)  .. playerName .. "\124r")
+    window.text:SetText("Actions for " .. SetPlayerNameColorByClass(playerName, className))
 
     -- create and add close btn
     local close = CreateFrame("BUTTON", "CloseBtn", window, "UIPanelCloseButton")
@@ -149,6 +152,7 @@ function dropDown:ShowOptionWindow(playerName, className)
     appendBtn:SetScript("OnClick", function()
         ChatFrame1EditBox:SetFocus()
         ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. playerName .. " ")
+        print("\124cffff0000 Appended\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " to chat box.")
         window:Hide()
     end)
 	
@@ -158,9 +162,12 @@ function dropDown:ShowOptionWindow(playerName, className)
 	checkBtn:SetHeight(25)
     checkBtn:SetText("!check")
     checkBtn:SetScript("OnClick", function()
+        local command = "!check"
         ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText("!check " .. playerName)
+        ChatFrame1EditBox:SetText(command .. " " .. playerName)
         ChatFrame1EditBox:HighlightText(0, -1)
+        print("\124cffff0000 Displayed\124r command: \124cff00ccff" .. command 
+        .. "\124r and player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
         window:Hide()
     end)
 
@@ -173,6 +180,7 @@ function dropDown:ShowOptionWindow(playerName, className)
         ChatFrame1EditBox:SetFocus()
         ChatFrame1EditBox:SetText(playerName)
         ChatFrame1EditBox:HighlightText(0, -1)
+        print("\124cffff0000 Displayed\124r player name: " .. SetPlayerNameColorByClass(playerName, className) .. " ready to copy.")
         window:Hide()
     end)
 
