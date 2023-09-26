@@ -44,21 +44,37 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
 
     if (level or 1) == 1 then
         -- display raid players
-        for i = 1, 40 do
-            local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
+        for i = 1, maxRaidPlayers do
+            local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
             if name ~= nil then
                 info.text = name
-                info.menuList, info.hasArrow = i, true
+                info.func = self.ShowOptionWindow
+                info.arg1 = name
                 UIDropDownMenu_AddButton(info)
             end
         end
-
-    else
-        -- display a nested options of player
-        info.func = self.SetValue
-        for i = 1, length(BUTTONS) do
-            info.text, info.icon = BUTTONS[i].title, BUTTONS[i].icon
-            UIDropDownMenu_AddButton(info, level)
-        end 
     end
 end)
+
+function dropDown:ShowOptionWindow(playerName)
+    UIDropDownMenu_SetText(dropDown, "Selected player: " .. playerName)
+    CloseDropDownMenus()
+
+    local window = CreateFrame("FRAME", "PlayerOptionsFrame", UIParent)
+    window:SetSize(350, 100)
+    window:SetPoint("CENTER")
+
+    window:SetBackdrop({
+        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+        edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+        edgeSize = 1,
+    })
+    window:SetBackdropColor(0, 0, 0, .5)
+    window:SetBackdropBorderColor(0, 0, 0)
+    window:EnableMouse(true)
+    window:SetMovable(true)
+    window:RegisterForDrag("LeftButton")
+    window:SetScript("OnDragStart", window.StartMoving)
+    window:SetScript("OnDragStop", window.StopMovingOrSizing)
+    window:SetScript("OnHide", window.StopMovingOrSizing)
+end
