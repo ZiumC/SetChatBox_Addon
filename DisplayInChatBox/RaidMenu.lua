@@ -163,21 +163,21 @@ function dropDown:DisplayInChat(playerName, command)
 
     if  command == BUTTONS[1].title then
         ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() ..playerName .. " ")
-        print("\124cffff0000 Appended\124r player name: \124cff00ccff" .. playerName .. "\124r to chat box.")
+        print(ColorText("Appended", "cffff0000") .. " player name: " .. ColorText(playerName, "cff00ccff") .. " to chat box.")
     end
 
     if  command == BUTTONS[2].title  then
         local command = BUTTONS[2].title
         ChatFrame1EditBox:SetText(command .. " " .. playerName)
         ChatFrame1EditBox:HighlightText(0, -1)
-        print("\124cffff0000 Displayed\124r command: \124cff00ccff" .. command 
-        .. "\124r and player name: \124cff00ccff" .. playerName .. "\124r ready to copy.")
+        print(ColorText("Displayed", "cffff0000") .. " command: " .. ColorText(command, "cff00ccff")
+         .. " and player name: " .. ColorText(playerName, "cff00ccff")  .. " ready to copy.")
     end
 
     if  command == BUTTONS[3].title then
         ChatFrame1EditBox:SetText(playerName)
         ChatFrame1EditBox:HighlightText(0, -1)
-        print("\124cffff0000 Displayed\124r player name: \124cff00ccff" .. playerName .. "\124r ready to copy.")
+        print(ColorText("Displayed", "cffff0000") .. " player name: " .. ColorText(playerName, "cff00ccff")  .. " ready to copy.")
     end
 
     CloseDropDownMenus()
