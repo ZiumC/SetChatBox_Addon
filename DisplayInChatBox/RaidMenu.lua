@@ -25,12 +25,10 @@ local function length(T)
 end
 
 local function ColorText(text, color)
-
     local startColorLine = '\124'
     local endColorLine = '\124r'
 
     return startColorLine .. color .. text .. endColorLine
-
 end
 
 local function SetPlayerNameColorByClass(playerName, className)
@@ -95,64 +93,67 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     raidPlayersCount = GetNumGroupMembers()
     UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
 
-    local maxSubGroup = 0
-    if (level or 1) == 1 then
-        for i = 1, maxRaidPlayers do
-            local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
-            if name ~= nil then
-                groups[i] = subgroup .. " " .. name
+    if (raidPlayersCount > 0) and (IsInRaid() == true) then 
+        local maxSubGroup = 0
+        if (level or 1) == 1 then
+            for i = 1, maxRaidPlayers do
+                local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
+                if name ~= nil then
+                    groups[i] = subgroup .. " " .. name
+                end
+                if subgroup > maxSubGroup then
+                    maxSubGroup = subgroup
+                end
             end
-            if subgroup > maxSubGroup then
-                maxSubGroup = subgroup
-            end
-        end
-        
-        -- display raid groups
-        for j = 1, maxSubGroup do
-            info.text, info.hasArrow = "Group " .. j, true
-            UIDropDownMenu_AddButton(info)
-        end
-    end
-
-    if level == 2 then
-        -- split and get parrent button name
-        local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
-        local count = 0
-        local playerGroup = 0
-
-        for split in string.gmatch(parrentBtnName, "%S+") do
-            count = count + 1
-            if count == 2 then
-                playerGroup = split
+            
+            -- display raid groups
+            for j = 1, maxSubGroup do
+                info.text, info.hasArrow = "Group " .. j, true
+                UIDropDownMenu_AddButton(info)
             end
         end
 
-        -- assign players to raid group
-        for i = 1, maxRaidPlayers do
-            local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
-            if name ~= nil then
-                if playerGroup == (subgroup .. "") then
-                    info.text = SetPlayerNameColorByClass(name, fileName)
-                    info.value = name
-                    info.hasArrow = true
-                    info.arg1 = name
-                    info.arg2 = fileName
-                    UIDropDownMenu_AddButton(info, level)
+        if level == 2 then
+            -- split and get parrent button name
+            local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
+            local count = 0
+            local playerGroup = 0
+
+            for split in string.gmatch(parrentBtnName, "%S+") do
+                count = count + 1
+                if count == 2 then
+                    playerGroup = split
+                end
+            end
+
+            -- assign players to raid group
+            for i = 1, maxRaidPlayers do
+                local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
+                if name ~= nil then
+                    if playerGroup == (subgroup .. "") then
+                        info.text = SetPlayerNameColorByClass(name, fileName)
+                        info.value = name
+                        info.hasArrow = true
+                        info.arg1 = name
+                        info.arg2 = fileName
+                        UIDropDownMenu_AddButton(info, level)
+                    end
                 end
             end
         end
-    end
 
-    if level == 3 then
-        local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
-        for i = 1, length(BUTTONS) do
-            info.text, info.icon = BUTTONS[i].title, BUTTONS[i].icon
-            info.func = self.DisplayInChat
-            info.arg1 = parrentBtnName
-            info.arg2 = BUTTONS[i].title
-            UIDropDownMenu_AddButton(info, level)
+        if level == 3 then
+            local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
+            for i = 1, length(BUTTONS) do
+                info.text, info.icon = BUTTONS[i].title, BUTTONS[i].icon
+                info.func = self.DisplayInChat
+                info.arg1 = parrentBtnName
+                info.arg2 = BUTTONS[i].title
+                UIDropDownMenu_AddButton(info, level)
+            end
         end
-        
+    else
+        UIDropDownMenu_SetText(dropDown, "You're not in RAID")
     end
 end)
 
