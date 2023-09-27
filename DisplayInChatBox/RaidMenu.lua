@@ -24,49 +24,54 @@ local function length(T)
     return count
 end
 
-local function SetPlayerNameColorByClass(playerName, className)
+local function ColorText(text, color)
 
     local startColorLine = '\124'
     local endColorLine = '\124r'
 
-    if className == "Druid" then
-        return startColorLine .. "cFFFFA500" .. playerName .. endColorLine
-    end
+    return startColorLine .. color .. text .. endColorLine
 
+end
+
+local function SetPlayerNameColorByClass(playerName, className)
     if className == "Paladin" then
-        return startColorLine .. "cFFFFC0CB" .. playerName .. endColorLine
+        return ColorText(playerName, "cFFFFC0CB")
     end
 
     if className == "Death Knight" then
-        return startColorLine .. "cFFFF0000" .. playerName .. endColorLine
+        return ColorText(playerName, "cFFFF0000")
+    end
+
+    if className == "Druid" then
+        return ColorText(playerName, "cFFFFA500")
     end
 
     if className == "Hunter" then
-        return startColorLine .. "cFF90EE90" .. playerName .. endColorLine
+        return ColorText(playerName, "cFF90EE90")
     end
 
     if className == "Mage" then
-        return startColorLine .. "cFFADD8E6" .. playerName .. endColorLine
+        return ColorText(playerName, "cFFADD8E6")
     end
 
     if className == "Priest" then
-        return startColorLine .. "cffffffff" .. playerName .. endColorLine
+        return ColorText(playerName, "cffffffff")
     end
 
     if className == "Rogue" then
-        return startColorLine .. "cffffff00" .. playerName .. endColorLine
+        return ColorText(playerName, "cffffff00")
     end
 
     if className == "Shaman" then
-        return startColorLine .. "cff0000ff" .. playerName .. endColorLine
+        return ColorText(playerName, "cff0000ff")
     end
 
     if className == "Warlock" then
-        return startColorLine .. "cFF800080" .. playerName .. endColorLine
+        return ColorText(playerName, "cFF800080")
     end
 
     if className == "Warrior" then
-        return startColorLine .. "cFFD2B48C" .. playerName .. endColorLine
+        return ColorText(playerName, "cFFD2B48C")
     end
 end
 
