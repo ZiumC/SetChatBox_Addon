@@ -92,24 +92,24 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
 
     local maxSubGroup = 0
     if (level or 1) == 1 then
-        -- display raid players
         for i = 1, maxRaidPlayers do
             local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
-
             if name ~= nil then
                 groups[i] = subgroup .. " " .. name
             end
-
             if subgroup > maxSubGroup then
                 maxSubGroup = subgroup
             end
         end
-
+        
+        -- display raid groups
         for j = 1, maxSubGroup do
             info.text, info.hasArrow = "Group " .. j, true
             UIDropDownMenu_AddButton(info)
         end
-    else
+    end
+
+    if level == 2 then
         -- split and get parrent button name
         local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
         local count = 0
@@ -121,12 +121,15 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
                 playerGroup = split
             end
         end
+
+        -- assign players to raid group
         for i = 1, maxRaidPlayers do
             local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
             if name ~= nil then
-                if playerGroup == (subgroup .."") then
+                if playerGroup == (subgroup .. "") then
                     info.text = SetPlayerNameColorByClass(name, fileName)
-                    info.func = self.ShowOptionWindow
+                    info.value = name
+                    info.hasArrow = true
                     info.arg1 = name
                     info.arg2 = fileName
                     UIDropDownMenu_AddButton(info, level)
@@ -134,7 +137,46 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             end
         end
     end
+
+    if level == 3 then
+        local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
+        for i = 1, length(BUTTONS) do
+            info.text, info.icon = BUTTONS[i].title, BUTTONS[i].icon
+            info.func = self.DisplayInChat
+            info.arg1 = parrentBtnName
+            info.arg2 = BUTTONS[i].title
+            UIDropDownMenu_AddButton(info, level)
+        end
+        
+    end
 end)
+
+function dropDown:DisplayInChat(playerName, command)
+
+    UIDropDownMenu_SetText(dropDown, "Selected player: " .. playerName)
+    ChatFrame1EditBox:SetFocus()
+
+    if  command == BUTTONS[1].title then
+        ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() ..playerName .. " ")
+        print("\124cffff0000 Appended\124r player name: \124cff00ccff" .. playerName .. "\124r to chat box.")
+    end
+
+    if  command == BUTTONS[2].title  then
+        local command = BUTTONS[2].title
+        ChatFrame1EditBox:SetText(command .. " " .. playerName)
+        ChatFrame1EditBox:HighlightText(0, -1)
+        print("\124cffff0000 Displayed\124r command: \124cff00ccff" .. command 
+        .. "\124r and player name: \124cff00ccff" .. playerName .. "\124r ready to copy.")
+    end
+
+    if  command == BUTTONS[3].title then
+        ChatFrame1EditBox:SetText(playerName)
+        ChatFrame1EditBox:HighlightText(0, -1)
+        print("\124cffff0000 Displayed\124r player name: \124cff00ccff" .. playerName .. "\124r ready to copy.")
+    end
+
+    CloseDropDownMenus()
+end
 
 function dropDown:ShowOptionWindow(playerName, className)
     UIDropDownMenu_SetText(dropDown, "Selected player: " .. playerName)
