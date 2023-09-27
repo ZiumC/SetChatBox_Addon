@@ -1,94 +1,80 @@
-DTC_PLAYER_NAME_BTN = "COPY_PLAYER_NAME"
-DTC_PLAYER_NAME_PROMPT = "Copy Name"
+local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY", "TARGET","FRIEND", "VEHICLE", "FOCUS", }
 
-DTC_PLAYER_NAME_WITH_COMMAND_BTN = "COPY_PLAYER_NAME_WITH_COMMAND"
-DTC_PLAYER_NAME_WITH_COMMAND_PROMPT = "Copy & Command"
-
-DTC_PLAYER_NAME_APPEND_BTN = "COPY_PLAYER_NAME_AND_APPEND"
-DTC_PLAYER_NAME_APPEND_PROMPT = "Copy & Append"
-
-Colors = {
+BUTTONS = {
     {
-        title = 'LIGHTBLUE',
-        color = 'cff00ccff',
-    }, 
+        title = "Append",
+        icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_4.png"
+    },
     {
-        title = 'RED',
-        color = 'cffff0000',
-    }, 
+        title = "!check",
+        icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_1.png"
+    },
     {
-        title = 'GREEN',
-        color = 'cff66ff00',
-    }, 
+        title = "Name",
+        icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_3.png"
+    }
 }
 
-local StartLine = '\124'
-local EndLine = '\124r'
+local function length(T)
+    local count = 0
+    for _ in pairs(T) do 
+        count = count + 1 
+    end
+    return count
+end
 
-local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY" ,"TARGET","FRIEND", "VEHICLE", "SELF", "FOCUS", }
+local function ColorText(text, color)
+    local startColorLine = '\124'
+    local endColorLine = '\124r'
 
-local function menuButtonFunction(self)	
-    local PlayerName = getglobal("UIDROPDOWNMENU_INIT_MENU")
-    local ChatFrame1EditBox = ChatFrame1EditBox
+    return startColorLine .. color .. text .. endColorLine
+end
 
-	if self.value == DTC_PLAYER_NAME_BTN then
-        local command = PlayerName.name
-        ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText(command)
-        ChatFrame1EditBox:HighlightText(0, -1)
-        print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")
-        print("Text in chat: " .. StartLine .. Colors[3].color .. command .. EndLine)
+local function DisplayInChat(playerName, command)
+    ChatFrame1EditBox:SetFocus()
+
+    if  command == BUTTONS[1].title then
+        ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() ..playerName .. " ")
+        print(ColorText("Appended", "cffff0000") .. " player name: " .. ColorText(playerName, "cff00ccff") .. " to chat box.")
     end
 
-    if self.value == DTC_PLAYER_NAME_WITH_COMMAND_BTN then
-        local command = "!check " .. PlayerName.name
-        ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText(command)
+    if  command == BUTTONS[2].title  then
+        local command = BUTTONS[2].title
+        ChatFrame1EditBox:SetText(command .. " " .. playerName)
         ChatFrame1EditBox:HighlightText(0, -1)
-        print(StartLine .. Colors[2].color .. "Displayed" .. EndLine .. " command: " .. StartLine .. Colors[1].color .. "!check" ..
-         EndLine .." and player name: " .. StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " ready to copy.")
-		print("Text in chat: " .. StartLine .. Colors[3].color .. command .. EndLine)		
-	end
+        print(ColorText("Displayed", "cffff0000") .. " command: " .. ColorText(command, "cff00ccff")
+         .. " and player name: " .. ColorText(playerName, "cff00ccff")  .. " ready to copy.")
+    end
 
-    if self.value == DTC_PLAYER_NAME_APPEND_BTN then
-        local command = PlayerName.name
-        ChatFrame1EditBox:SetFocus()
-        ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. command .. " ")
-        print(StartLine .. Colors[2].color .. "Appended" .. EndLine .. " player name: " ..
-        StartLine .. Colors[1].color .. PlayerName.name .. EndLine .. " to chat box.")
-	end
-
+    if  command == BUTTONS[3].title then
+        ChatFrame1EditBox:SetText(playerName)
+        ChatFrame1EditBox:HighlightText(0, -1)
+        print(ColorText("Displayed", "cffff0000") .. " player name: " .. ColorText(playerName, "cff00ccff")  .. " ready to copy.")
+    end
 end
 
-UnitPopupButtons[DTC_PLAYER_NAME_BTN] = {
-    text = DTC_PLAYER_NAME_PROMPT,
-	dist = 0,
-	icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_3.png",
-}
+local function SetMenuButtonFunction(self)	
+    local unitMenu = getglobal("UIDROPDOWNMENU_INIT_MENU")
+    local playerName = unitMenu.name
+    local ChatFrame1EditBox = ChatFrame1EditBox
 
-UnitPopupButtons[DTC_PLAYER_NAME_WITH_COMMAND_BTN] = {
-    text = DTC_PLAYER_NAME_WITH_COMMAND_PROMPT,
-	dist = 0,
-	icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_1.png",
-}
-
-UnitPopupButtons[DTC_PLAYER_NAME_APPEND_BTN] = {
-    text = DTC_PLAYER_NAME_APPEND_PROMPT,
-	dist = 0,
-	icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_4.png",
-}
-
-for k,v in pairs(DropdownMenuList) do		
-    table.insert(UnitPopupMenus[v],DTC_PLAYER_NAME_APPEND_BTN)
+    for i = 1, length(BUTTONS) do
+        if self.value == BUTTONS[i].title then
+            DisplayInChat(playerName, BUTTONS[i].title)
+        end
+    end
 end
 
-for k,v in pairs(DropdownMenuList) do		
-	table.insert(UnitPopupMenus[v],DTC_PLAYER_NAME_WITH_COMMAND_BTN)
+for i = 1, length(BUTTONS) do
+    UnitPopupButtons[BUTTONS[i].title] = {
+        text = BUTTONS[i].title,
+        dist = 0,
+        icon = BUTTONS[i].icon,
+    }
+
+    for k,v in pairs(DropdownMenuList) do		
+        table.insert(UnitPopupMenus[v], BUTTONS[i].title)
+    end
 end
 
-for k,v in pairs(DropdownMenuList) do		
-	table.insert(UnitPopupMenus[v],DTC_PLAYER_NAME_BTN)
-end
-
-
-hooksecurefunc("UnitPopup_OnClick",menuButtonFunction)
+hooksecurefunc("UnitPopup_OnClick", SetMenuButtonFunction)
