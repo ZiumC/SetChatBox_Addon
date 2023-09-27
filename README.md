@@ -17,20 +17,20 @@ It is created in mind to use with <a href="https://github.com/ZiumC/Blacklist_Bo
 7) Just paste copied folder from point 3 and done.
 
 # How to work with addon?
-Usage is very simple, in chat game just right click on player name. At the bottom, you will see additional positions 'Copy & Append', 'Copy & Command' and 'Copy Name'.    
+Usage is very simple, in chat game just right click on player name. At the bottom, you will see additional positions 'Append', '!check' and 'Name'.    
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/2de71c82-bb18-4d71-b5af-3523221abf8c)     
 - ```Append``` - displays and appends player name to current text in chat edit box.
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/9c652dc9-3033-4086-97ae-cc2a5c809678)   
 - ```!check``` - displays in chat edit box selected text: ```!check [player_name]```.   
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/b21b8353-db5f-4c3b-a3ad-33500bf6f080)   
 - ```Name``` - displays in chat edit box selected text: ```[player_name]```.   
-![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/d02956c8-332c-4969-a3aa-8eefb80b283c)
+![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/d02956c8-332c-4969-a3aa-8eefb80b283c)    
    
 
 
-This also works if you target player and you are in raid group
+This also works if you target player and you are in raid group   
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/ca1b56e5-0496-4930-bccf-48da328e9e5e)   
-This work in raid group, but this is accesiable from that menu
+This addon also allows to use in raid group but it should be used from dedicated menu
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/b9555c02-6e8b-40ec-bfbb-6bcd238f1564)
 
 
