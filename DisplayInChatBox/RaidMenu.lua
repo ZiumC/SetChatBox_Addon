@@ -183,3 +183,25 @@ function dropDown:DisplayInChat(playerName, command)
 
     CloseDropDownMenus()
 end
+
+local mapButtonAddon = LibStub("AceAddon-3.0"):NewAddon("DICB", "AceConsole-3.0")
+local icon = LibStub("LibDBIcon-1.0")
+local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
+    type = "data source",
+    icon = "Interface/Icons/inv_jewelry_amulet_06",
+    OnClick = 
+    function() 
+        print("test")
+    end,
+})
+
+function mapButtonAddon:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New("DatabaseObject", { 
+        profile = { 
+            minimap = { 
+                hide = false, 
+            }, 
+        }, 
+    }) 
+    icon:Register("DatabaseObject", database, self.db.profile.minimap) 
+end
