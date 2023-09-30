@@ -188,10 +188,19 @@ local mapButtonAddon = LibStub("AceAddon-3.0"):NewAddon("DICB", "AceConsole-3.0"
 local icon = LibStub("LibDBIcon-1.0")
 local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
     type = "data source",
+        OnTooltipShow = function(tooltip)
+            tooltip:SetText("Display In Chat Box")
+            tooltip:Show()
+    end,
     icon = "Interface/Icons/inv_jewelry_amulet_06",
-    OnClick = 
-    function() 
-        print("test")
+    OnClick = function() 
+        if isRaidMenuHidded then
+            dropDown:Show()
+            isRaidMenuHidded = false
+        else 
+            dropDown:Hide()
+            isRaidMenuHidded = true
+        end
     end,
 })
 
