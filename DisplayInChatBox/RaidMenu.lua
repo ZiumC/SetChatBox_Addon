@@ -142,6 +142,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             end
         end
 
+        -- display aviable options
         if level == 3 then
             local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
             for i = 1, length(BUTTONS) do
@@ -157,6 +158,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     end
 end)
 
+-- handling player options
 function dropDown:DisplayInChat(playerName, command)
 
     UIDropDownMenu_SetText(dropDown, "Selected player: " .. playerName)
@@ -184,22 +186,25 @@ function dropDown:DisplayInChat(playerName, command)
     CloseDropDownMenus()
 end
 
+
+-- map button
+local isRaidMenuHidded = true
 local mapButtonAddon = LibStub("AceAddon-3.0"):NewAddon("DICB", "AceConsole-3.0")
 local icon = LibStub("LibDBIcon-1.0")
 local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
     type = "data source",
-        OnTooltipShow = function(tooltip)
-            tooltip:SetText("Display In Chat Box")
-            tooltip:Show()
-    end,
-    icon = "Interface/Icons/inv_jewelry_amulet_06",
+    OnTooltipShow = function(tooltip)
+          tooltip:SetText("Display In Chat Box")
+          tooltip:Show()
+     end,
+    icon = "Interface/Icons/inv_jewelry_stormpiketrinket_05",
     OnClick = function() 
-        if isRaidMenuHidded then
-            dropDown:Show()
-            isRaidMenuHidded = false
-        else 
+        if isRaidMenuHidded == false then
             dropDown:Hide()
             isRaidMenuHidded = true
+        else 
+            dropDown:Show()
+            isRaidMenuHidded = false
         end
     end,
 })
@@ -214,3 +219,20 @@ function mapButtonAddon:OnInitialize()
     }) 
     icon:Register("DatabaseObject", database, self.db.profile.minimap) 
 end
+
+
+-- on each raid update player count is increased
+local function OnRaidRosterUpdate()
+    UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+
+    local isInRaid = IsInRaid()
+    if isInRaid then
+        dropDown:Show()
+    else
+        dropDown:Hide()
+    end
+end
+
+dropDown:Hide()
+dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
+dropDown:SetScript("OnEvent", OnRaidRosterUpdate)
