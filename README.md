@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Static Badge" src="https://img.shields.io/badge/addon_version-1.0.1-purple">
+  <img alt="Static Badge" src="https://img.shields.io/badge/addon_version-1.0.2-purple">
   <img alt="GitHub last commit (by committer)" src="https://img.shields.io/github/last-commit/ZiumC/SetChatBox_Addon">
 </p> 
 
@@ -9,7 +9,7 @@ It is created in mind to use with <a href="https://github.com/ZiumC/Blacklist_Bo
 
 # Instalation 
 1) To use this addon you have to download latest zip file at <a href="https://github.com/ZiumC/SetChatBox_Addon/releases" rel="nofollow">this link</a>.
-2) Next you have to unzip this files. You will see folder ```SetChatBox_Addon-1.0.1```.
+2) Next you have to unzip this files. You will see folder ```SetChatBox_Addon-1.0.2```.
 3) Open this folder and next just right click on ```DisplayInChatBox``` folder and copy it.
 4) Next open your World of Warcraft folder. (default is ```C:\Program Files\World of Warcraft\```).
 5) Go into the ```Interface``` folder.
@@ -31,7 +31,11 @@ Usage is very simple, in chat game just right click on player name. At the botto
 This also works if you target player and you are in raid group   
 ![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/ca1b56e5-0496-4930-bccf-48da328e9e5e)   
 This addon also allows to use in raid group but it should be used from dedicated menu
-![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/b9555c02-6e8b-40ec-bfbb-6bcd238f1564)
+![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/b9555c02-6e8b-40ec-bfbb-6bcd238f1564)    
+
+To turn on/off addon just click button next to minimap   
+![image](https://github.com/ZiumC/SetChatBox_Addon/assets/90453529/50ea1ccf-6930-4778-9478-5bac06e50410)
+
 
 
 
