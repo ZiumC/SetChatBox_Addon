@@ -73,6 +73,17 @@ local function SetPlayerNameColorByClass(playerName, className)
     end
 end
 
+local function split(text, separator)
+    if separator == nil then
+        separator = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(text, "([^".. separator .."]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
 -- create and configure dropdown menu
 local dropDown = CreateFrame("FRAME", "RaidDropDown", UIParent, "UIDropDownMenuTemplate")
 dropDown:EnableMouse(true)
