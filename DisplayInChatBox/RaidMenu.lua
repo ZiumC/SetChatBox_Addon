@@ -31,6 +31,17 @@ local function ColorText(text, color)
     return startColorLine .. color .. text .. endColorLine
 end
 
+local function split(text, separator)
+    if separator == nil then
+        separator = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(text, "([^".. separator .."]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
 local function SetPlayerNameColorByClass(playerName, className)
     if className == "Paladin" then
         return ColorText(playerName, "cFFFFC0CB")
@@ -73,15 +84,35 @@ local function SetPlayerNameColorByClass(playerName, className)
     end
 end
 
-local function split(text, separator)
-    if separator == nil then
-        separator = "%s"
+-- handling on event
+local function OnEvent(self, event, ...)
+    if event == "RAID_ROSTER_UPDATE" then
+        UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+        if IsInRaid() then
+            dropDown:Show()
+            isMenuHidded = false
+        else
+            dropDown:Hide()
+            isMenuHidded = true
+        end
     end
-    local t = {}
-    for str in string.gmatch(text, "([^".. separator .."]+)") do
-        table.insert(t, str)
+
+    if event == "PLAYER_TARGET_CHANGED" then
+        if UnitIsPlayer("target") then
+            UIDropDownMenu_SetText(dropDown, "Target player: " .. split(UnitName("target"), " ")[1])
+            dropDown:Show()
+            isMenuHidded = false
+        else
+            if IsInRaid() then
+                UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+            else
+                UIDropDownMenu_SetText(dropDown, "You're not in RAID")
+                dropDown:Hide()
+                isMenuHidded = true
+            end
+        end
+
     end
-    return t
 end
 
 -- create and configure dropdown menu
@@ -93,6 +124,12 @@ dropDown:SetScript("OnDragStart", dropDown.StartMoving)
 dropDown:SetScript("OnDragStop", dropDown.StopMovingOrSizing)
 dropDown:SetScript("OnHide", dropDown.StopMovingOrSizing)
 dropDown:SetPoint("TOP")
+-- configure on event
+dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
+dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
+dropDown:SetScript("OnEvent", OnEvent)
+dropDown:Hide()
+
 UIDropDownMenu_SetWidth(dropDown, 170)
 UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
 
@@ -102,7 +139,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
 
     raidPlayersCount = GetNumGroupMembers()
-    UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
 
     if UnitIsPlayer("target") then
         local playerName = split(UnitName("target"), " ")[1]
@@ -207,7 +243,7 @@ end
 
 
 -- map button
-local isRaidMenuHidded = true
+local isMenuHidded = true
 local mapButtonAddon = LibStub("AceAddon-3.0"):NewAddon("DICB", "AceConsole-3.0")
 local icon = LibStub("LibDBIcon-1.0")
 local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
@@ -218,12 +254,13 @@ local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
      end,
     icon = "Interface/Icons/inv_jewelry_stormpiketrinket_05",
     OnClick = function() 
-        if isRaidMenuHidded == false then
+        print(isMenuHidded)
+        if isMenuHidded == false then
             dropDown:Hide()
-            isRaidMenuHidded = true
+            isMenuHidded = true
         else 
             dropDown:Show()
-            isRaidMenuHidded = false
+            isMenuHidded = false
         end
     end,
 })
@@ -238,39 +275,3 @@ function mapButtonAddon:OnInitialize()
     }) 
     icon:Register("DatabaseObject", database, self.db.profile.minimap) 
 end
-
--- handling on event
-local function OnEvent(self, event, ...)
-    if event == "RAID_ROSTER_UPDATE" then
-        UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
-        if IsInRaid() then
-            dropDown:Show()
-            isMenuHidded = false
-        else
-            dropDown:Hide()
-            isMenuHidded = true
-        end
-    end
-
-    if event == "PLAYER_TARGET_CHANGED" then
-        if UnitIsPlayer("target") then
-            local playerName = split(UnitName("target"), " ")[1]
-            UIDropDownMenu_SetText(dropDown, "Target player: " .. playerName)
-            dropDown:Show()
-            isMenuHidded = false
-        else
-            if IsInRaid() then
-                UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
-            else
-                dropDown:Hide()
-                isMenuHidded = true
-            end
-        end
-
-    end
-end
-
-dropDown:Hide()
-dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
-dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
-dropDown:SetScript("OnEvent", OnEvent)
