@@ -1,4 +1,4 @@
-local DropdownMenuList = {"PLAYER","RAID_PLAYER","PARTY", "TARGET","FRIEND", "VEHICLE", "FOCUS", }
+local DropdownMenuList = {"FRIEND", }
 
 BUTTONS = {
     {
