@@ -107,8 +107,8 @@ local function OnEvent(self, event, ...)
             dropDown:Hide()
             isMenuHidded = true
         end
-    end
-    if event == "PLAYER_TARGET_CHANGED" then
+
+    elseif event == "PLAYER_TARGET_CHANGED" then
         if UnitIsPlayer("target") then
             UIDropDownMenu_SetText(dropDown, "Target player: " .. split(UnitName("target"), " ")[1])
             dropDown:Show()
@@ -129,7 +129,9 @@ end
 dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
 dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
 dropDown:SetScript("OnEvent", OnEvent)
-dropDown:Hide()
+if IsInRaid() == false then
+    dropDown:Hide()
+end
 
 -- create and bind script to dropdown menu
 local groups = {}
