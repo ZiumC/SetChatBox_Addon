@@ -1,4 +1,3 @@
-local raidPlayersCount = GetNumGroupMembers()
 local maxRaidPlayers = 40
 
 BUTTONS = {
@@ -84,7 +83,19 @@ local function SetPlayerNameColorByClass(playerName, className)
     end
 end
 
--- handling on event
+-- create and configure dropdown menu
+local dropDown = CreateFrame("FRAME", "RaidDropDown", UIParent, "UIDropDownMenuTemplate")
+dropDown:EnableMouse(true)
+dropDown:SetMovable(true)
+dropDown:RegisterForDrag("LeftButton")
+dropDown:SetScript("OnDragStart", dropDown.StartMoving)
+dropDown:SetScript("OnDragStop", dropDown.StopMovingOrSizing)
+dropDown:SetScript("OnHide", dropDown.StopMovingOrSizing)
+dropDown:SetPoint("TOP")
+UIDropDownMenu_SetWidth(dropDown, 170)
+UIDropDownMenu_SetText(dropDown, "Display In Chat Box")
+
+-- funtions handle on any event
 local function OnEvent(self, event, ...)
     if event == "RAID_ROSTER_UPDATE" then
         UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
@@ -96,7 +107,6 @@ local function OnEvent(self, event, ...)
             isMenuHidded = true
         end
     end
-
     if event == "PLAYER_TARGET_CHANGED" then
         if UnitIsPlayer("target") then
             UIDropDownMenu_SetText(dropDown, "Target player: " .. split(UnitName("target"), " ")[1])
@@ -111,34 +121,19 @@ local function OnEvent(self, event, ...)
                 isMenuHidded = true
             end
         end
-
     end
 end
 
--- create and configure dropdown menu
-local dropDown = CreateFrame("FRAME", "RaidDropDown", UIParent, "UIDropDownMenuTemplate")
-dropDown:EnableMouse(true)
-dropDown:SetMovable(true)
-dropDown:RegisterForDrag("LeftButton")
-dropDown:SetScript("OnDragStart", dropDown.StartMoving)
-dropDown:SetScript("OnDragStop", dropDown.StopMovingOrSizing)
-dropDown:SetScript("OnHide", dropDown.StopMovingOrSizing)
-dropDown:SetPoint("TOP")
 -- configure on event
 dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
 dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
 dropDown:SetScript("OnEvent", OnEvent)
 dropDown:Hide()
 
-UIDropDownMenu_SetWidth(dropDown, 170)
-UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
-
+-- create and bind script to dropdown menu
 local groups = {}
--- create and bind the function to dropdown menu
 UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
-
-    raidPlayersCount = GetNumGroupMembers()
 
     if UnitIsPlayer("target") then
         local playerName = split(UnitName("target"), " ")[1]
@@ -147,11 +142,12 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             info.func = self.DisplayInChat
             info.arg1 = playerName
             info.arg2 = BUTTONS[i].title
-            UIDropDownMenu_AddButton(info, level)
+            UIDropDownMenu_AddButton(info)
         end
     else
         if IsInRaid() then 
-            UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidPlayersCount .. ")")
+            UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+            -- display raid groups
             local maxSubGroup = 0
             if (level or 1) == 1 then
                 for i = 1, maxRaidPlayers do
@@ -163,7 +159,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
                         maxSubGroup = subgroup
                     end
                 end
-                -- display raid groups
                 for j = 1, maxSubGroup do
                     info.text, info.hasArrow = "Group " .. j, true
                     UIDropDownMenu_AddButton(info)
