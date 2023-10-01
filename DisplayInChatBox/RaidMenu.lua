@@ -96,7 +96,7 @@ UIDropDownMenu_SetWidth(dropDown, 170)
 UIDropDownMenu_SetText(dropDown, "Display In Chat Box")
 
 -- funtions handle on any event
-local isMenuHidded = true
+local isMenuHidded = false
 local function OnEvent(self, event, ...)
     if event == "RAID_ROSTER_UPDATE" then
         UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
@@ -131,6 +131,7 @@ dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
 dropDown:SetScript("OnEvent", OnEvent)
 if IsInRaid() == false then
     dropDown:Hide()
+    isMenuHidded = true
 end
 
 -- create and bind script to dropdown menu
