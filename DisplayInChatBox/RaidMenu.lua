@@ -96,6 +96,7 @@ UIDropDownMenu_SetWidth(dropDown, 170)
 UIDropDownMenu_SetText(dropDown, "Display In Chat Box")
 
 -- funtions handle on any event
+local isMenuHidded = true
 local function OnEvent(self, event, ...)
     if event == "RAID_ROSTER_UPDATE" then
         UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
@@ -168,14 +169,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             if level == 2 then
                 local parrentBtnName = getglobal("UIDROPDOWNMENU_MENU_VALUE")
                 local count = 0
-                local playerGroup = 0
-
-                for split in string.gmatch(parrentBtnName, "%S+") do
-                    count = count + 1
-                    if count == 2 then
-                        playerGroup = split
-                    end
-                end
+                local playerGroup = split(parrentBtnName, " ")[2]
                 -- assign players to raid group
                 for i = 1, maxRaidPlayers do
                     local name, rank, subgroup, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(i)
@@ -238,7 +232,6 @@ end
 
 
 -- map button
-local isMenuHidded = true
 local mapButtonAddon = LibStub("AceAddon-3.0"):NewAddon("DICB", "AceConsole-3.0")
 local icon = LibStub("LibDBIcon-1.0")
 local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
@@ -249,7 +242,6 @@ local database = LibStub("LibDataBroker-1.1"): NewDataObject("DatabaseObject", {
      end,
     icon = "Interface/Icons/inv_jewelry_stormpiketrinket_05",
     OnClick = function() 
-        print(isMenuHidded)
         if isMenuHidded == false then
             dropDown:Hide()
             isMenuHidded = true
