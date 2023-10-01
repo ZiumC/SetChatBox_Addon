@@ -239,19 +239,38 @@ function mapButtonAddon:OnInitialize()
     icon:Register("DatabaseObject", database, self.db.profile.minimap) 
 end
 
+-- handling on event
+local function OnEvent(self, event, ...)
+    if event == "RAID_ROSTER_UPDATE" then
+        UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+        if IsInRaid() then
+            dropDown:Show()
+            isMenuHidded = false
+        else
+            dropDown:Hide()
+            isMenuHidded = true
+        end
+    end
 
--- on each raid update player count is increased
-local function OnRaidRosterUpdate()
-    UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+    if event == "PLAYER_TARGET_CHANGED" then
+        if UnitIsPlayer("target") then
+            local playerName = split(UnitName("target"), " ")[1]
+            UIDropDownMenu_SetText(dropDown, "Target player: " .. playerName)
+            dropDown:Show()
+            isMenuHidded = false
+        else
+            if IsInRaid() then
+                UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+            else
+                dropDown:Hide()
+                isMenuHidded = true
+            end
+        end
 
-    local isInRaid = IsInRaid()
-    if isInRaid then
-        dropDown:Show()
-    else
-        dropDown:Hide()
     end
 end
 
 dropDown:Hide()
 dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
-dropDown:SetScript("OnEvent", OnRaidRosterUpdate)
+dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
+dropDown:SetScript("OnEvent", OnEvent)
