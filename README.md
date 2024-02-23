@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Static Badge" src="https://img.shields.io/badge/addon_version-1.0.5-purple">
+  <img alt="Static Badge" src="https://img.shields.io/badge/addon_version-1.0.6-purple">
   <img alt="GitHub last commit (by committer)" src="https://img.shields.io/github/last-commit/ZiumC/SetChatBox_Addon">
 </p> 
 
@@ -9,7 +9,7 @@ It is created in mind to use with <a href="https://github.com/ZiumC/Blacklist_Bo
 
 # Instalation 
 1) To use this addon you have to download latest zip file at <a href="https://github.com/ZiumC/SetChatBox_Addon/releases" rel="nofollow">this link</a>.
-2) Next you have to unzip this files. You will see folder ```SetChatBox_Addon-1.0.5```.
+2) Next you have to unzip this files. You will see folder ```SetChatBox_Addon-1.0.6```.
 3) Open this folder and next just right click on ```DisplayInChatBox``` folder and copy it.
 4) Next open your World of Warcraft folder. (default is ```C:\Program Files\World of Warcraft\```).
 5) Go into the ```Interface``` folder.
