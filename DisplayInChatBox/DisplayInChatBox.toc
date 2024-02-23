@@ -2,7 +2,7 @@
 ## Title: DisplayInChatBox
 ## Notes: Displays on chat edit box player name or full command ready to copy. Also appends payer name to chat box.
 ## Author: Zium
-## Version: 1.0.5
+## Version: 1.0.6
 ## SavedVariables: DICB_DB
 
 PopupMenu.lua
