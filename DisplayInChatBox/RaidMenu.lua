@@ -1,4 +1,5 @@
 local maxRaidPlayers = 40
+local raidMembers = 0
 
 BUTTONS = {
     {
@@ -14,6 +15,7 @@ BUTTONS = {
         icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_3.png"
     }
 }
+
 
 local function length(T)
     local count = 0
@@ -98,9 +100,10 @@ UIDropDownMenu_SetText(dropDown, "Display In Chat Box")
 -- funtions handle on any event
 local isMenuHidded = false
 local function OnEvent(self, event, ...)
+    raidMembers = GetNumRaidMembers()
     if event == "RAID_ROSTER_UPDATE" then
-        UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
-        if IsInRaid() then
+        UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidMembers .. ")")
+        if raidMembers > 0 then
             dropDown:Show()
             isMenuHidded = false
         else
@@ -114,8 +117,8 @@ local function OnEvent(self, event, ...)
             dropDown:Show()
             isMenuHidded = false
         else
-            if IsInRaid() then
-                UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+            if raidMembers > 0 then
+                UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidMembers .. ")")
             else
                 UIDropDownMenu_SetText(dropDown, "You're not in RAID")
                 dropDown:Hide()
@@ -129,7 +132,7 @@ end
 dropDown:RegisterEvent("RAID_ROSTER_UPDATE")
 dropDown:RegisterEvent("PLAYER_TARGET_CHANGED")
 dropDown:SetScript("OnEvent", OnEvent)
-if IsInRaid() == false then
+if (raidMembers > 0) == false then
     dropDown:Hide()
     isMenuHidded = true
 end
@@ -149,8 +152,8 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             UIDropDownMenu_AddButton(info)
         end
     else
-        if IsInRaid() then 
-            UIDropDownMenu_SetText(dropDown, "Raid Players (" .. GetNumGroupMembers() .. ")")
+        if raidMembers > 0 then 
+            UIDropDownMenu_SetText(dropDown, "Raid Players (" .. raidMembers .. ")")
             -- display raid groups
             local maxSubGroup = 0
             if (level or 1) == 1 then
